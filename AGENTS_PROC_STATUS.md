@@ -60,6 +60,6 @@
 
 - [x] `Projects > Edit project > Sources > Add folder`의 전용 `electron-pick-workspace-root-option` 메시지를 웹 폴더 선택기로 연결
 - [x] 기존 프로젝트 편집 모달 뒤에 가려지지 않도록 선택기를 최상위 레이어로 분리
-- [x] 탐색 시작점과 허용 범위를 Docker 컨테이너의 `/workspace`로 제한
+- [x] 사용자 요청에 따라 탐색 시작점과 허용 범위를 Docker 컨테이너의 `/`로 확장
 - [x] 선택 결과를 컨테이너 경로로 Electron 호환 프로젝트 등록 처리에 전달
 - [ ] 사용자 브라우저에서 강력 새로고침 후 실제 클릭·폴더 추가 확인

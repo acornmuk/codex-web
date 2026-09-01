@@ -188,11 +188,10 @@ function WorkspaceRootDialog({
                     ].join(" ")}
                     id={TITLE_ID}
                   >
-                    Add Docker workspace folder
+                    Add Docker folder
                   </div>
                   <div className={["sr-only"].join(" ")} id={DESCRIPTION_ID}>
-                    Choose a folder mounted inside the Codex Web Docker
-                    workspace.
+                    Choose a folder inside the Codex Web Docker container.
                   </div>
                 </div>
               </div>
@@ -222,8 +221,8 @@ function WorkspaceRootDialog({
                     "text-token-description-foreground",
                   ].join(" ")}
                 >
-                  Docker workspace:{" "}
-                  {directoryQuery.data?.workspaceRoot ?? "/workspace"}
+                  Docker filesystem root:{" "}
+                  {directoryQuery.data?.workspaceRoot ?? "/"}
                 </span>
                 <div
                   className={[

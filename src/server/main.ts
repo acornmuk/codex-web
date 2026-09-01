@@ -316,7 +316,7 @@ async function getWorkspaceDirectoryEntries({
   directoriesOnly: boolean;
 }): Promise<WorkspaceDirectoryEntries> {
   const configuredRoot = path.resolve(
-    process.env.CODEX_WEB_WORKSPACE_ROOT?.trim() || "/workspace",
+    process.env.CODEX_WEB_WORKSPACE_ROOT?.trim() || "/",
   );
   const workspaceRoot = await fs.realpath(configuredRoot);
   const requestedPath = directoryPath?.trim() || workspaceRoot;
@@ -329,7 +329,7 @@ async function getWorkspaceDirectoryEntries({
       !relativePath.startsWith(`..${path.sep}`));
   if (!isWithinWorkspace) {
     throw new Error(
-      `Folder must be inside the Docker workspace: ${workspaceRoot}`,
+      `Folder must be inside the Docker filesystem root: ${workspaceRoot}`,
     );
   }
 
