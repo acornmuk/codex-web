@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""Minimal unzip compatibility wrapper used by scripts/prepare_asar."""
+
+import argparse
+import zipfile
+
+
+parser = argparse.ArgumentParser(add_help=False)
+parser.add_argument("-o", action="store_true")
+parser.add_argument("archive")
+parser.add_argument("-d", dest="destination", required=True)
+args = parser.parse_args()
+
+with zipfile.ZipFile(args.archive) as archive:
+    archive.extractall(args.destination)
