@@ -17,6 +17,7 @@ export type WorkspaceDirectoryEntry = {
 export type WorkspaceDirectoryEntries = {
   directoryPath: string;
   parentPath: string | null;
+  workspaceRoot: string;
   entries: WorkspaceDirectoryEntry[];
 };
 
@@ -187,10 +188,11 @@ function WorkspaceRootDialog({
                     ].join(" ")}
                     id={TITLE_ID}
                   >
-                    Add remote project
+                    Add Docker workspace folder
                   </div>
                   <div className={["sr-only"].join(" ")} id={DESCRIPTION_ID}>
-                    Choose a folder on the Codex Web host to add as a project.
+                    Choose a folder mounted inside the Codex Web Docker
+                    workspace.
                   </div>
                 </div>
               </div>
@@ -213,6 +215,15 @@ function WorkspaceRootDialog({
                   )}
                 >
                   Select folder
+                </span>
+                <span
+                  className={[
+                    "text-sm",
+                    "text-token-description-foreground",
+                  ].join(" ")}
+                >
+                  Docker workspace:{" "}
+                  {directoryQuery.data?.workspaceRoot ?? "/workspace"}
                 </span>
                 <div
                   className={[

@@ -109,6 +109,7 @@ type WorkspaceDirectoryEntry = {
 type WorkspaceDirectoryEntries = {
   directoryPath: string;
   parentPath: string | null;
+  workspaceRoot: string;
   entries: WorkspaceDirectoryEntry[];
 };
 
@@ -314,8 +315,24 @@ async function getWorkspaceDirectoryEntries({
   directoryPath: string | null;
   directoriesOnly: boolean;
 }): Promise<WorkspaceDirectoryEntries> {
-  const requestedPath = directoryPath?.trim() || os.homedir();
-  const resolvedPath = path.resolve(requestedPath);
+  const configuredRoot = path.resolve(
+    process.env.CODEX_WEB_WORKSPACE_ROOT?.trim() || "/workspace",
+  );
+  const workspaceRoot = await fs.realpath(configuredRoot);
+  const requestedPath = directoryPath?.trim() || workspaceRoot;
+  const resolvedPath = await fs.realpath(path.resolve(requestedPath));
+  const relativePath = path.relative(workspaceRoot, resolvedPath);
+  const isWithinWorkspace =
+    relativePath === "" ||
+    (!path.isAbsolute(relativePath) &&
+      relativePath !== ".." &&
+      !relativePath.startsWith(`..${path.sep}`));
+  if (!isWithinWorkspace) {
+    throw new Error(
+      `Folder must be inside the Docker workspace: ${workspaceRoot}`,
+    );
+  }
+
   const stat = await fs.stat(resolvedPath);
   if (!stat.isDirectory()) {
     throw new Error(`Directory not found: ${requestedPath}`);
@@ -338,13 +355,13 @@ async function getWorkspaceDirectoryEntries({
     })
     .sort(compareWorkspaceDirectoryEntries);
 
-  const rootPath = path.parse(resolvedPath).root;
   const parentPath =
-    resolvedPath === rootPath ? null : path.dirname(resolvedPath);
+    resolvedPath === workspaceRoot ? null : path.dirname(resolvedPath);
 
   return {
     directoryPath: resolvedPath,
     parentPath,
+    workspaceRoot,
     entries,
   };
 }

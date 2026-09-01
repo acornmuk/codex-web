@@ -19,6 +19,11 @@ cd /workspace/codex-web
 ./scripts/codex-web-local.sh stop
 ```
 
+웹의 프로젝트 폴더 선택기는 기본적으로 Docker 컨테이너의 `/workspace`만
+탐색한다. 호스트 폴더를 사용하려면 먼저 해당 폴더를 컨테이너의
+`/workspace/<project-name>` 아래로 마운트해야 한다. 다른 컨테이너 경로를
+사용할 때는 서버 시작 전에 `CODEX_WEB_WORKSPACE_ROOT`로 지정할 수 있다.
+
 소스 또는 UI 버전을 다시 준비하려면 다음 명령을 실행한다.
 
 ```bash

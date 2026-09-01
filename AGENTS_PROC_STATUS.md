@@ -55,3 +55,11 @@
 - [x] browser/server 빌드 성공
 - [x] DOM 열기·닫기 및 `/avatar-overlay` 라우팅 격리 테스트 성공
 - [ ] 실제 화면 최종 확인: 컨테이너에 Chromium 시스템 라이브러리가 없어 사용자 브라우저에서 확인 필요
+
+## Docker 프로젝트 폴더 선택기
+
+- [x] `Projects > Edit project > Sources > Add folder` 메시지를 웹 폴더 선택기로 연결
+- [x] 기존 프로젝트 편집 모달 뒤에 가려지지 않도록 선택기를 최상위 레이어로 분리
+- [x] 탐색 시작점과 허용 범위를 Docker 컨테이너의 `/workspace`로 제한
+- [x] 선택 결과를 컨테이너 경로로 Electron 호환 프로젝트 등록 처리에 전달
+- [ ] 사용자 브라우저에서 강력 새로고침 후 실제 클릭·폴더 추가 확인

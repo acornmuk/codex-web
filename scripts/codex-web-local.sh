@@ -9,6 +9,7 @@ ADDRESS_FILE="$RUN_DIR/codex-web.address"
 SESSION_NAME="codex-web-local"
 HOST="${CODEX_WEB_HOST:-0.0.0.0}"
 PORT="${CODEX_WEB_PORT:-8214}"
+WORKSPACE_ROOT="${CODEX_WEB_WORKSPACE_ROOT:-/workspace}"
 PROBE_HOST="$HOST"
 [[ "$PROBE_HOST" == "0.0.0.0" ]] && PROBE_HOST="127.0.0.1"
 
@@ -25,15 +26,20 @@ start() {
     echo "Invalid CODEX_WEB_PORT: $PORT" >&2
     return 2
   fi
+  if [[ ! -d "$WORKSPACE_ROOT" ]]; then
+    echo "Docker workspace directory not found: $WORKSPACE_ROOT" >&2
+    return 2
+  fi
   mkdir -p "$RUN_DIR"
   : > "$LOG_FILE"
   printf 'http://%s:%s\n' "$HOST" "$PORT" > "$ADDRESS_FILE"
 
   local launch_command
   printf -v launch_command \
-    'exec env PATH=%q CODEX_CLI_PATH=%q %q src/server/main.js --host %q --port %q >>%q 2>&1' \
+    'exec env PATH=%q CODEX_CLI_PATH=%q CODEX_WEB_WORKSPACE_ROOT=%q %q src/server/main.js --host %q --port %q >>%q 2>&1' \
     "$NODE_DIR/bin:$PATH" \
     "${CODEX_CLI_PATH:-/root/.local/bin/codex}" \
+    "$WORKSPACE_ROOT" \
     "$NODE_DIR/bin/node" \
     "$HOST" \
     "$PORT" \
