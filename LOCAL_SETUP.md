@@ -64,3 +64,10 @@ Electron의 별도 투명 창 대신 현재 Codex 웹페이지 우측 하단에 
 
 Pet은 브라우저 탭 내부에만 표시된다. 데스크톱의 다른 프로그램 위에 항상 떠 있는
 Electron 방식은 지원하지 않으며, 현재 위치는 우측 하단으로 고정된다.
+
+## 하단 패널 터미널
+
+Docker/Linux 환경에서는 프로젝트 의존성으로 설치한 `node-pty`를 사용한다.
+공식 앱 자산에 포함된 macOS ARM용 `node-pty`는 `scripts/prepare_asar`에서 제거해
+Linux 네이티브 모듈이 선택되도록 한다. UI 또는 자산을 다시 준비한 뒤에는
+`npm rebuild node-pty`로 현재 컨테이너용 네이티브 모듈을 다시 빌드한다.
