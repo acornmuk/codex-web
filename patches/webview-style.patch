@@ -1,12 +1,58 @@
 --- a/webview/index.html
 +++ b/webview/index.html
-@@ -131,6 +131,11 @@
+@@ -131,6 +131,57 @@
          }
        }
      </style>
 +    <style>
 +      .main-surface {
 +        --spacing-token-safe-header-left: 0px;
++      }
++
++      [data-codex-xterm] {
++        --vscode-terminal-background: #fbfcfe !important;
++        --vscode-terminal-foreground: #1f2328 !important;
++        --vscode-terminal-selectionBackground: rgba(9, 105, 218, 0.28) !important;
++        --vscode-terminal-inactiveSelectionBackground: rgba(9, 105, 218, 0.18) !important;
++        --vscode-terminal-ansiBlack: #1f2328 !important;
++        --vscode-terminal-ansiRed: #cf222e !important;
++        --vscode-terminal-ansiGreen: #116329 !important;
++        --vscode-terminal-ansiYellow: #7d4e00 !important;
++        --vscode-terminal-ansiBlue: #0550ae !important;
++        --vscode-terminal-ansiMagenta: #8250df !important;
++        --vscode-terminal-ansiCyan: #0a6573 !important;
++        --vscode-terminal-ansiWhite: #57606a !important;
++        --vscode-terminal-ansiBrightBlack: #59636e !important;
++        --vscode-terminal-ansiBrightRed: #a40e26 !important;
++        --vscode-terminal-ansiBrightGreen: #1a7f37 !important;
++        --vscode-terminal-ansiBrightYellow: #9a6700 !important;
++        --vscode-terminal-ansiBrightBlue: #0969da !important;
++        --vscode-terminal-ansiBrightMagenta: #8250df !important;
++        --vscode-terminal-ansiBrightCyan: #1b7c83 !important;
++        --vscode-terminal-ansiBrightWhite: #24292f !important;
++      }
++
++      :is(.dark, .electron-dark) [data-codex-xterm] {
++        --vscode-terminal-background: #0d1117 !important;
++        --vscode-terminal-foreground: #f0f6fc !important;
++        --vscode-terminal-selectionBackground: rgba(56, 139, 253, 0.4) !important;
++        --vscode-terminal-inactiveSelectionBackground: rgba(56, 139, 253, 0.24) !important;
++        --vscode-terminal-ansiBlack: #8b949e !important;
++        --vscode-terminal-ansiRed: #ff7b72 !important;
++        --vscode-terminal-ansiGreen: #7ee787 !important;
++        --vscode-terminal-ansiYellow: #f2cc60 !important;
++        --vscode-terminal-ansiBlue: #79c0ff !important;
++        --vscode-terminal-ansiMagenta: #d2a8ff !important;
++        --vscode-terminal-ansiCyan: #76e3ea !important;
++        --vscode-terminal-ansiWhite: #e6edf3 !important;
++        --vscode-terminal-ansiBrightBlack: #b1bac4 !important;
++        --vscode-terminal-ansiBrightRed: #ffa198 !important;
++        --vscode-terminal-ansiBrightGreen: #aff5b4 !important;
++        --vscode-terminal-ansiBrightYellow: #f8e3a1 !important;
++        --vscode-terminal-ansiBrightBlue: #a5d6ff !important;
++        --vscode-terminal-ansiBrightMagenta: #e2c5ff !important;
++        --vscode-terminal-ansiBrightCyan: #b3f0ff !important;
++        --vscode-terminal-ansiBrightWhite: #ffffff !important;
 +      }
 +    </style>
      <script type="module" crossorigin src="./assets/index-LQUNCOO3.js"></script>

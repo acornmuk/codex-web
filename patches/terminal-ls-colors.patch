@@ -1,0 +1,39 @@
+--- a/.vite/build/main-d9AlrLRg.js
++++ b/.vite/build/main-d9AlrLRg.js
+@@ -64491,8 +64491,34 @@
+       }
+     }
+     return (
+-      process.platform !== `win32` &&
+-        ((i.TERM = I4), delete i.TERMINFO, delete i.TERMINFO_DIRS),
++      process.platform !== `win32` && (() => {
++        i.TERM = I4;
++        delete i.TERMINFO;
++        delete i.TERMINFO_DIRS;
++        let terminalLsColors = [
++          `rs=0`,
++          `di=01;34`,
++          `ln=01;36`,
++          `mh=00`,
++          `pi=01;33`,
++          `so=01;35`,
++          `do=01;35`,
++          `bd=01;33`,
++          `cd=01;33`,
++          `or=01;31`,
++          `mi=00`,
++          `su=01;91`,
++          `sg=01;93`,
++          `ca=00`,
++          `tw=01;96`,
++          `ow=01;96`,
++          `st=01;94`,
++          `ex=01;32`,
++        ].join(`:`);
++        i.LS_COLORS = i.LS_COLORS
++          ? `${i.LS_COLORS}:${terminalLsColors}`
++          : terminalLsColors;
++      })(),
+       r.t(i)
+     );
+   }
