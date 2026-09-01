@@ -17,11 +17,13 @@ export type WorkspaceDirectoryEntry = {
 export type WorkspaceDirectoryEntries = {
   directoryPath: string;
   parentPath: string | null;
+  workspaceRoot: string;
   entries: WorkspaceDirectoryEntry[];
 };
 
 const TITLE_ID = "codex-web-workspace-root-dialog-title";
 const DESCRIPTION_ID = "codex-web-workspace-root-dialog-description";
+const TOP_LAYER_Z_INDEX = "2147483647";
 
 function errorMessage(error: unknown): string {
   if (error instanceof Error) {
@@ -186,10 +188,10 @@ function WorkspaceRootDialog({
                     ].join(" ")}
                     id={TITLE_ID}
                   >
-                    Add remote project
+                    Add Docker folder
                   </div>
                   <div className={["sr-only"].join(" ")} id={DESCRIPTION_ID}>
-                    Choose a folder on the Codex Web host to add as a project.
+                    Choose a folder inside the Codex Web Docker container.
                   </div>
                 </div>
               </div>
@@ -212,6 +214,15 @@ function WorkspaceRootDialog({
                   )}
                 >
                   Select folder
+                </span>
+                <span
+                  className={[
+                    "text-sm",
+                    "text-token-description-foreground",
+                  ].join(" ")}
+                >
+                  Docker filesystem root:{" "}
+                  {directoryQuery.data?.workspaceRoot ?? "/"}
                 </span>
                 <div
                   className={[
@@ -482,7 +493,7 @@ function WorkspaceRootDialog({
                   disabled={!selectedPath || isBusy}
                   type="submit"
                 >
-                  Add project
+                  Add folder
                 </button>
               </div>
             </div>
@@ -522,8 +533,26 @@ function ensureHost(): HTMLElement {
   if (!element) {
     element = document.createElement("div");
     element.id = DIALOG_ID;
+    // The picker is rendered outside the Codex Radix dialog so it can sit on
+    // top of it. Keep pointer presses inside this host from reaching Radix's
+    // document-level outside-click handler, which would otherwise dismiss the
+    // underlying Edit project dialog before the selected folder is delivered.
+    element.addEventListener("pointerdown", (event) => {
+      event.stopPropagation();
+    });
     document.body.append(element);
   }
+
+  // The project picker is opened from another modal. Give its portal a
+  // dedicated top-level stacking context so it cannot render underneath the
+  // originating Radix dialog when both use the app's default z-50 class.
+  Object.assign(element.style, {
+    inset: "0",
+    pointerEvents: "none",
+    position: "fixed",
+    zIndex: TOP_LAYER_Z_INDEX,
+  });
+
   return element;
 }
 

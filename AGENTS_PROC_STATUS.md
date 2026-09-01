@@ -55,3 +55,20 @@
 - [x] browser/server 빌드 성공
 - [x] DOM 열기·닫기 및 `/avatar-overlay` 라우팅 격리 테스트 성공
 - [ ] 실제 화면 최종 확인: 컨테이너에 Chromium 시스템 라이브러리가 없어 사용자 브라우저에서 확인 필요
+
+## Docker 프로젝트 폴더 선택기
+
+- [x] `Projects > Edit project > Sources > Add folder`의 전용 `electron-pick-workspace-root-option` 메시지를 웹 폴더 선택기로 연결
+- [x] 기존 프로젝트 편집 모달 뒤에 가려지지 않도록 선택기를 최상위 레이어로 분리
+- [x] 사용자 요청에 따라 탐색 시작점과 허용 범위를 Docker 컨테이너의 `/`로 확장
+- [x] 선택 결과를 컨테이너 경로로 서버 IPC bridge에 전달
+- [x] 서버가 원본 데스크톱과 같은 `message-for-view` 이벤트를 보내 Sources 상태를 갱신하도록 수정
+- [x] 폴더 선택기의 클릭이 뒤쪽 Edit project 모달의 바깥 클릭으로 처리되지 않도록 이벤트 전파 차단
+- [x] 실제 Chromium UI에서 폴더 추가, Save, 재진입 후 유지, 원상복구까지 확인
+
+## 하단 패널 터미널
+
+- [x] upstream 터미널 지원 커밋 `5427b8a` 적용
+- [x] macOS ARM용 번들 `node-pty` 대신 프로젝트의 Linux용 `node-pty`를 사용하도록 구성
+- [x] 실제 main bundle 모듈 해석 경로에서 PTY 셸 생성 및 명령 출력 확인
+- [ ] 사용자 브라우저에서 강력 새로고침 후 하단 패널·터미널 UI 확인

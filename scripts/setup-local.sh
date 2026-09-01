@@ -29,7 +29,7 @@ npm ci --ignore-scripts
 rm -rf "$PROJECT_DIR/scratch"
 HOSTED_CODEX_APP_ZIP="$ASSET_FILE" npm run prepare:asar
 rm -rf "$PROJECT_DIR/scratch/ChatGPT.app"
-npm rebuild better-sqlite3
+npm rebuild better-sqlite3 node-pty
 npm run build:browser
 npm run build:server
 
