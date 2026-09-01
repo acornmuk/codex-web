@@ -22,6 +22,7 @@ export type WorkspaceDirectoryEntries = {
 
 const TITLE_ID = "codex-web-workspace-root-dialog-title";
 const DESCRIPTION_ID = "codex-web-workspace-root-dialog-description";
+const TOP_LAYER_Z_INDEX = "2147483647";
 
 function errorMessage(error: unknown): string {
   if (error instanceof Error) {
@@ -524,6 +525,17 @@ function ensureHost(): HTMLElement {
     element.id = DIALOG_ID;
     document.body.append(element);
   }
+
+  // The project picker is opened from another modal. Give its portal a
+  // dedicated top-level stacking context so it cannot render underneath the
+  // originating Radix dialog when both use the app's default z-50 class.
+  Object.assign(element.style, {
+    inset: "0",
+    pointerEvents: "none",
+    position: "fixed",
+    zIndex: TOP_LAYER_Z_INDEX,
+  });
+
   return element;
 }
 
