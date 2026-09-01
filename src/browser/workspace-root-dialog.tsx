@@ -493,7 +493,7 @@ function WorkspaceRootDialog({
                   disabled={!selectedPath || isBusy}
                   type="submit"
                 >
-                  Add project
+                  Add folder
                 </button>
               </div>
             </div>

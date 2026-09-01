@@ -58,6 +58,10 @@ type RendererToMainMessage =
       requestId: string;
       directoryPath: string | null;
       directoriesOnly: boolean;
+    }
+  | {
+      type: "workspace-root-option-picked";
+      root: string;
     };
 
 type MainToRendererMessage =
@@ -595,6 +599,23 @@ async function startIpcBridgeServer(options: ServerOptions): Promise<void> {
               socket.send(JSON.stringify(payload));
             }
           });
+        return;
+      }
+
+      if (message.type === "workspace-root-option-picked") {
+        const payload: MainToRendererMessage = {
+          type: "ipc-main-event",
+          channel: "codex_desktop:message-for-view",
+          args: [
+            {
+              type: "workspace-root-option-picked",
+              root: message.root,
+            },
+          ],
+        };
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify(payload));
+        }
         return;
       }
 

@@ -49,6 +49,10 @@ type RendererToMainMessage =
       requestId: string;
       directoryPath: string | null;
       directoriesOnly: boolean;
+    }
+  | {
+      type: "workspace-root-option-picked";
+      root: string;
     };
 
 type MainToRendererMessage =
@@ -167,16 +171,6 @@ export function emitRendererEvent(channel: string, args: unknown[]): void {
   for (const listener of listeners) {
     listener(event, ...args);
   }
-}
-
-function dispatchMessageForView(message: Record<string, unknown>): void {
-  window.dispatchEvent(
-    new MessageEvent("message", {
-      data: message,
-      origin: window.location.origin,
-      source: window,
-    }),
-  );
 }
 
 function handleIncomingMessage(message: MainToRendererMessage): void {
@@ -477,7 +471,7 @@ export const ipcRenderer = {
             return undefined;
           }
 
-          dispatchMessageForView({
+          enqueueMessage({
             type: "workspace-root-option-picked",
             root,
           });
