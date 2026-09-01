@@ -169,6 +169,16 @@ export function emitRendererEvent(channel: string, args: unknown[]): void {
   }
 }
 
+function dispatchMessageForView(message: Record<string, unknown>): void {
+  window.dispatchEvent(
+    new MessageEvent("message", {
+      data: message,
+      origin: window.location.origin,
+      source: window,
+    }),
+  );
+}
+
 function handleIncomingMessage(message: MainToRendererMessage): void {
   if (message.type === "ipc-main-event") {
     emitRendererEvent(message.channel, message.args);
@@ -467,9 +477,10 @@ export const ipcRenderer = {
             return undefined;
           }
 
-          emitRendererEvent("codex_desktop:message-for-view", [
-            { type: "workspace-root-option-picked", root },
-          ]);
+          dispatchMessageForView({
+            type: "workspace-root-option-picked",
+            root,
+          });
           return undefined;
         });
       }
