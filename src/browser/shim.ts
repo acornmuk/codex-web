@@ -10,6 +10,10 @@ import {
   openSelectWorkspaceRootDialog,
   type WorkspaceDirectoryEntries,
 } from "./workspace-root-dialog";
+import {
+  handleWebPetOverlayMessage,
+  installWebPetOverlay,
+} from "./pet-overlay";
 
 type IpcListener = (event: unknown, ...args: unknown[]) => void;
 
@@ -423,9 +427,21 @@ electronShim.onMemoryNavigationChanged = (navigation) => {
   window.history.pushState(undefined, "", browserPath.path);
 };
 
+installWebPetOverlay((isOpen) => {
+  window.setTimeout(() => {
+    emitRendererEvent("codex_desktop:message-for-view", [
+      { type: "avatar-overlay-open-state-changed", isOpen },
+    ]);
+  });
+});
+
 export const ipcRenderer = {
   invoke(channel: string, ...args: unknown[]): Promise<unknown> {
     if (channel === "codex_desktop:message-from-view" && args.length === 1) {
+      if (handleWebPetOverlayMessage(args[0])) {
+        return Promise.resolve(undefined);
+      }
+
       if (isOpenInBrowserMessage(args[0])) {
         window.open(args[0].url, "_blank", "noopener,noreferrer");
       }
@@ -473,6 +489,14 @@ export const ipcRenderer = {
     return this.removeListener(channel, listener);
   },
   send(channel: string, ...args: unknown[]): void {
+    if (
+      channel === "codex_desktop:message-from-view" &&
+      args.length === 1 &&
+      handleWebPetOverlayMessage(args[0])
+    ) {
+      return;
+    }
+
     enqueueMessage({
       type: "ipc-renderer-send",
       channel,
@@ -484,6 +508,13 @@ export const ipcRenderer = {
     message: unknown,
     transfer?: Transferable[],
   ): void {
+    if (
+      channel === "codex_desktop:message-from-view" &&
+      handleWebPetOverlayMessage(message)
+    ) {
+      return;
+    }
+
     if (transfer && transfer.length > 0) {
       const portIds = transfer.map((transferable) => {
         if (!(transferable instanceof MessagePort)) {

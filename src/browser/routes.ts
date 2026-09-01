@@ -1,7 +1,15 @@
 export function mapBrowserPathToInitialRoute(pathname: string, search: string) {
-  if (pathname === "/share/receive" && search) {
-    const params = new URLSearchParams(search);
+  const params = new URLSearchParams(search);
+  if (
+    params.get("codexWebPet") === "1" &&
+    params.get("initialRoute") === "/avatar-overlay"
+  ) {
+    return {
+      memoryPath: "/avatar-overlay",
+    };
+  }
 
+  if (pathname === "/share/receive" && search) {
     const prompt = ["title", "text", "url"]
       .flatMap((name) => {
         const value = params.get(name);
