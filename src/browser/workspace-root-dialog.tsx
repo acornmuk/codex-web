@@ -533,6 +533,13 @@ function ensureHost(): HTMLElement {
   if (!element) {
     element = document.createElement("div");
     element.id = DIALOG_ID;
+    // The picker is rendered outside the Codex Radix dialog so it can sit on
+    // top of it. Keep pointer presses inside this host from reaching Radix's
+    // document-level outside-click handler, which would otherwise dismiss the
+    // underlying Edit project dialog before the selected folder is delivered.
+    element.addEventListener("pointerdown", (event) => {
+      event.stopPropagation();
+    });
     document.body.append(element);
   }
 
