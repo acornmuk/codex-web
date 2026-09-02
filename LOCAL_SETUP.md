@@ -1,18 +1,17 @@
 # 로컬 실행 환경
 
-이 프로젝트는 Docker 컨테이너 안의 `/workspace/codex-web`에 구성되어 있다.
+이 문서는 Docker 컨테이너에서 프로젝트를 실행하는 일반적인 방법을 설명한다.
 
 ## 현재 구성
 
-- Node.js: 프로젝트 내부 `.tools/node-v24.20.0-linux-x64`
-- Codex CLI: `/root/.local/bin/codex`
+- Node.js: 프로젝트 내부 `.tools/` 런타임
+- Codex CLI: `PATH` 또는 `CODEX_CLI_PATH`로 지정한 실행 파일
 - 기본 바인딩: `0.0.0.0:8214`
-- 현재 컨테이너 IP: `172.18.0.2`
 
 ## 관리 명령
 
 ```bash
-cd /workspace/codex-web
+cd <repository-directory>
 ./scripts/codex-web-local.sh start
 ./scripts/codex-web-local.sh status
 ./scripts/codex-web-local.sh logs
@@ -30,21 +29,21 @@ cd /workspace/codex-web
 소스 또는 UI 버전을 다시 준비하려면 다음 명령을 실행한다.
 
 ```bash
-cd /workspace/codex-web
+cd <repository-directory>
 ./scripts/setup-local.sh
 ```
 
 ## Docker 호스트 브라우저에서 열기
 
 서버는 Docker 호스트 연결을 받을 수 있도록 컨테이너 인터페이스의 8214번
-포트에 바인딩한다. Linux Docker 호스트에서는 다음 주소로 직접 연결할 수 있다.
+포트에 바인딩한다. Linux Docker 호스트에서는 컨테이너 주소로 접속할 수 있다.
 
-<http://172.18.0.2:8214>
+```text
+http://<container-ip>:8214
+```
 
 컨테이너 IP는 재생성 시 바뀔 수 있다. 고정된 `http://127.0.0.1:8214` 주소를
-사용하려면 컨테이너 실행 옵션에 `-p 127.0.0.1:8214:8214`를 추가한다. 현재
-컨테이너는 포트 매핑 없이 생성됐고 Docker 소켓도 연결되지 않아, 실행 중인
-컨테이너 내부에서 이 호스트 설정을 추가할 수는 없다.
+사용하려면 컨테이너 실행 옵션에 `-p 127.0.0.1:8214:8214`를 추가한다.
 
 `codex-web` 자체에는 로그인/접근 제어가 없다. 호스트 포트 매핑은 반드시
 `127.0.0.1`로 제한하고, 인터넷이나 신뢰할 수 없는 LAN에 직접 공개하면 안 된다.
